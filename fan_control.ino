@@ -9,6 +9,10 @@ const int motorDirPin = 4;           // Motor direction pin
 const int trigPin = 9;               // Sonar sensor trigger
 const int echoPin = 8;               // Sonar sensor echo
 
+int ltemp = 20;         //Change it to set the lower range of temperature
+int utemp = 30;         //Change it to set the upper range of temperature
+
+int mindist = 20; //in CM (change it to set the minimum distance from which fan  ctivates )
 // LCD setup
 LiquidCrystal_I2C lcd(0x27, 16, 2);  // I2C LCD at address 0x27
 
@@ -40,8 +44,8 @@ void loop() {
   distance = duration * 0.034 / 2;
   
   // Control motor based on temperature and distance
-  if (distance <= 20 && temperature >= 30) {
-    pwmValue = map(temperature, 30, 35, 125, 250);
+  if (distance <= mindist && temperature >= ltemp) {
+    pwmValue = map(temperature, ltemp, utemp, 125, 250);
     pwmValue = constrain(pwmValue, 125, 250);
     int fanSpeedPercent = map(pwmValue, 125, 250, 50, 100);
     
